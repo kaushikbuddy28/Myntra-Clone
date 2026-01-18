@@ -1,0 +1,51 @@
+import { useDispatch, useSelector } from "react-redux";
+import { bagActions } from "../Store/bagSlice";
+import { IoBagHandleOutline } from "react-icons/io5";
+
+
+const HomeItem = ({ item }) => {
+
+const bagItems = useSelector (store=> store.bag)
+const elementFound = bagItems.indexOf(item.id) >=0;
+const dispatch =useDispatch();
+
+const handleAddTOBag =()=>{
+  dispatch(bagActions.addToBag(item.id))
+}
+
+const handleRemove =()=>{
+  dispatch(bagActions.removeFromBag(item.id))
+}
+
+
+  return (
+    <div className="item-container">
+      <img className="item-image" src={item.image} alt="item" />
+
+      <div className="rating">
+        {(item.rating?.stars ?? 0)} ⭐ | {(item.rating?.count ?? 0)}
+      </div>
+
+      <div className="company-name">{item.company}</div>
+      <div className="item-name">{item.item_name}</div>
+
+      <div className="price">
+        <span className="current-price">Rs {item.current_price}</span>
+        <span className="original-price">Rs {item.original_price}</span>
+        <span className="discount">
+          ({item.discount_percentage ?? 0}% OFF)
+        </span>
+      </div>
+
+      {elementFound ?(<button type="button" className="btn-add-bag myntra-btn-outline " onClick={handleRemove}>Remove</button>
+      ):(<button type="button" className=" btn-add-bag myntra-btn" onClick={handleAddTOBag}><IoBagHandleOutline />
+      Add to Bag</button>
+)}
+
+      
+
+    </div>
+  );
+};
+
+export default HomeItem;
